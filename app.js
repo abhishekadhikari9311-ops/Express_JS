@@ -17,6 +17,12 @@ app.use(express.static(filePath))
 app.get("/", (req, res) => {
   res.sendFile(filePath);
 });
+// single vs multi route parameter
+app.get("/about/:name/:surname",(req,res)=>{
+  console.log(req.params);
+  
+  res.send(`mine name is ${req.params.name} ${req.params.surname}.`)
+})
 
 // Start server
 app.listen(PORT, () => {
