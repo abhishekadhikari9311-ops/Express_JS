@@ -18,10 +18,17 @@ app.get("/", (req, res) => {
   res.sendFile(filePath);
 });
 // single vs multi route parameter
-app.get("/about/:name/:surname",(req,res)=>{
+app.get("/about/:name/:slug",(req,res)=>{
   console.log(req.params);
+  const formattedSlug=req.params.slug.replace(/-/gi," ")
   
-  res.send(`mine name is ${req.params.name} ${req.params.surname}.`)
+  res.send(`mine name is ${req.params.name} ${formattedSlug}.`)
+})
+
+// single vs multi query parameter 
+app.get("/contact",(req,res)=>{
+  console.log(req.query);
+  res.send(`mine name is ${req.query.name} and mine age is ${req.query.age}.`)
 })
 
 // Start server
