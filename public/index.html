@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Url Shortener Project</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="main">
+      <h1>URL SHORTENER</h1>
+      <form action="" id="url-form">
+        <label for="url">Url</label>
+        <input id="url" type="url" name="url" /><br /><br />
+        <label for="short-code">ShortCode</label>
+        <input id="short-code" name="short-code" type="text" /><br /><br />
+        <input id="btn" type="submit" value="shorten" /><br /><br />
+      </form>
+
+      <hr />
+      <ul>
+        Shortened Urls
+      </ul>
+    </div>
+    <script>
+      const fetchedShortenedUrls = async () => {
+        let res = await fetch("/links");
+        let resObj = await res.json();
+        // console.log(resObj, "resobj:---");
+
+        let list = document.getElementsByTagName("ul")[0];
+        list.innerHTML = "";
+
+        for (let [shortCode, url] of Object.entries(resObj)) {
+          let li = document.createElement("li");
+          const truncatedUrl =
+            `${url >= 30}` ? `${url.slice(0, 29)}...........hi` : url;
+          li.innerHTML = `<a href="/${shortCode}" target="_blank">
+            ${window.location.origin}/${shortCode}
+            </a>-${truncatedUrl}`;
+          list.appendChild(li);
+        }
+      };
+
+      document
+        .getElementById("url-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          let formData = new FormData(e.target);
+          // console.log(formData);
+          let url = formData.get("url");
+          let shortCode = formData.get("short-code");
+          // console.log(url, shortcode);
+          try {
+            let res = await fetch("/shorten", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ url, shortCode }),
+            });
+            // console.log(res, "res:");
+            if (res.ok) {
+              fetchedShortenedUrls();
+              alert("url shortened successfully");
+            } else {
+              alert("short code already exists or any other invalid reasons");
+            }
+          } catch (error) {
+            console.log("error occured:", error);
+          }
+        });
+      fetchedShortenedUrls();
+    </script>
+  </body>
+</html>
