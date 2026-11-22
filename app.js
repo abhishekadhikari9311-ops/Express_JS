@@ -1,20 +1,23 @@
-import express from "express"
-import path from "path"
-import {PORT} from "./env.js";
-let app = express();
 
-// const PORT = process.env.PORT || 5000;
+import express from "express";
+import path from "path";
+import { PORT } from "./env.js";
 
-// console.log(__dirname,__filename);
+const app = express();
 
-// console.log(import.meta.dirname);
-// console.log(import.meta.filename);
-const filePath=path.join(import.meta.dirname,"public","index.html")
+// Resolve the public HTML file
+const filePath = path.join(
+  import.meta.dirname,
+  "public",
+  "index.html"
+);
 
+// Home route
 app.get("/", (req, res) => {
   res.sendFile(filePath);
 });
 
+// Start server
 app.listen(PORT, () => {
-  console.log(`server is running at ${PORT}`);
+  console.log(`Server is running at ${PORT}`);
 });
