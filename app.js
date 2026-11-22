@@ -31,6 +31,16 @@ app.get("/contact",(req,res)=>{
   res.send(`mine name is ${req.query.name} and mine age is ${req.query.age}.`)
 })
 
+// form submissions in express js
+// app.get("/shorten",(req,res)=>{
+//   console.log(req.query.url,req.query.short-code);
+//   res.send(`hello ${req.query.url}--->${req.query.short-code}`)
+// })
+
+app.use((req,res)=>{
+  return res.status(404).sendFile(path.join(import.meta.dirname,"views","404.html"))
+})
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running at ${PORT}`);
