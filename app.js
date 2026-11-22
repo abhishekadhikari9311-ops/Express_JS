@@ -8,9 +8,10 @@ const app = express();
 // Resolve the public HTML file
 const filePath = path.join(
   import.meta.dirname,
-  "public",
-  "index.html"
+  "public"
 );
+
+app.use(express.static(filePath))
 
 // Home route
 app.get("/", (req, res) => {
